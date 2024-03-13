@@ -1,6 +1,6 @@
 <template>
   <v-card title="Города" variant="outlined" >
-    <CitiesCard v-if="choosen" :list="cities" @delete="deleteList(currentListId)" @update=""/>
+    <CitiesCard v-if="choosen" :list="cities" @delete="deleteList(currentListId)" @update="updateList(currentListId)"/>
     <v-tabs>
       <div v-for="item in lists" :key="item.name">
         <v-tab :color="item.color" @click="chooseList(item.id)" > 
@@ -17,8 +17,12 @@
 
   import api from '@/api/api'
   import { CityType, ListCitiesType } from '@/types';
-  import { onMounted, onUpdated, ref } from 'vue';
-  
+  import { onMounted, ref } from 'vue';
+  import { useRouter } from 'vue-router'
+  import { deleteInLocalStorage, saveToLocalStorage } from '@/model/localStore';
+
+  const router = useRouter()
+
   let choosen = ref<boolean>(false)
   let cities = ref<CityType[]>()
   let lists = ref<ListCitiesType[]>()
@@ -40,16 +44,22 @@
     await api.getAllListsOfCities().then((data) => {
       lists.value = data
     })
-    console.log('Update lists ' + JSON.stringify(lists.value));
   }
   const deleteList = async (id: string) => {
     choosen.value = false
     await api.deleteListOfCities(id).then((data) => {
     })
-    await loadLists()
+    loadLists()
   }
+
+  const updateList = (id: string) => {
+    saveToLocalStorage('currentList', id)
+    router.push('/form')
+  }
+
   onMounted(async () => {
-    await loadLists()
+    loadLists()
+    // deleteInLocalStorage('currentList')
   })
 
   loadLists()

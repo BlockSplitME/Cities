@@ -20,8 +20,10 @@ AppDataSource.initialize()
 
 app.get('/getAllCities', resolvers.getAllCities)
 app.get('/getAllListsOfCities', resolvers.getAllListsOfCities)
+app.get('/getList/:id', resolvers.getListById);
 app.get('/getListOfCities/:id', resolvers.getListOfCities);
 app.post('/createListOfCities', resolvers.addListOfCities);
+app.patch('/updateListOfCities/:id', resolvers.updateListOfCities);
 app.delete('/deleteListOfCities/:id', resolvers.deleteListOfCities)
 
 app.listen(8050, () => {

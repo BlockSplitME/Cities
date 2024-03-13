@@ -14,8 +14,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { CityType } from '@/types';
-
   const props = defineProps({
     list: Object
   })

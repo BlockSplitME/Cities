@@ -39,18 +39,53 @@
 			"response": []
 		},
 		{
+			"name": "Get all lists",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/getAllListsOfCities",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"getAllListsOfCities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/getList/{{id_list_russia}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"getList",
+						"{{id_list_russia}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get list cities",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/getListOfCities/65f0556e65bf152cb83a9101",
+					"raw": "{{base_url}}/getListOfCities/{{id_list_russia}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"getListOfCities",
-						"65f0556e65bf152cb83a9101"
+						"{{id_list_russia}}"
 					]
 				}
 			},
@@ -68,7 +103,8 @@
 							"});",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -77,7 +113,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Прага\",\n    \"fullname\": \"Пар\",\n    \"color\": \"red\",\n    \"listOfCities\": [\"65f0216a60f1d2e9b7c0b7b3\", \"65f0230260f1d2e9b7c0b7c2\", \"65f0230260f1d2e9b7c0b7c3\"]\n}",
+					"raw": "{\n  \"name\": \"Россия\",\n  \"fullName\": \"Российская Федерация\",\n  \"color\": \"red\",\n  \"cities\": [\n    \"65f0216a60f1d2e9b7c0b7b3\",\n    \"65f0230260f1d2e9b7c0b7c2\",\n    \"65f0230260f1d2e9b7c0b7c3\"\n  ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -98,6 +134,49 @@
 			"response": []
 		},
 		{
+			"name": "Update data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{    \n    \"name\": \"Россия\",\n  \"fullName\": \"Российская Федерация\",\n  \"color\": \"red\",\n  \"cities\": [\n    \"65f0216a60f1d2e9b7c0b7b3\",\n    \"65f0230260f1d2e9b7c0b7c2\",\n    \"65f0230260f1d2e9b7c0b7c3\"\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/updateListOfCities/{{id_list_russia}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"updateListOfCities",
+						"{{id_list_russia}}"
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
 			"name": "Delete list",
 			"event": [
 				{
@@ -109,7 +188,8 @@
 							"});",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -127,70 +207,6 @@
 					]
 				},
 				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
-			},
-			"response": []
-		},
-		{
-			"name": "Update data",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Successful PUT request\", function () {",
-							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
-							"});",
-							""
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/info?id=1",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"info"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1"
-						}
-					]
-				},
-				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
-			},
-			"response": []
-		},
-		{
-			"name": "Get all lists",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/getAllListsOfCities",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"getAllListsOfCities"
-					]
-				}
 			},
 			"response": []
 		}
@@ -218,7 +234,7 @@
 	"variable": [
 		{
 			"key": "id_list_russia",
-			"value": "65f02da35098657e1b72487a"
+			"value": "65f16ed169ea1ee56676a23e"
 		},
 		{
 			"key": "base_url",

@@ -25,7 +25,18 @@ async function getAllListsOfCities(): Promise<ListCitiesType[]> {
     });
 }
 
-async function getListOfCities(id: string): Promise<CityType[]> {
+async function getList(id: string): Promise<ListCitiesType> {
+  return axios.get(url+'/getList/' + id)
+  .then(response => {
+      let data = response.data 
+      return data
+  })
+  .catch(error => {
+      console.error(error);
+  });
+}
+
+async function getListOfCities(id: string): Promise<CityType[]> {  
     return axios.get(url+'/getListOfCities/'+ id)
     .then(response => {
       let data = response.data 
@@ -38,25 +49,29 @@ async function getListOfCities(id: string): Promise<CityType[]> {
 
 
 async function createListOfCities(data: ListForPost) {
-    console.log(data);
-    
-    axios.post(url+'/createListOfCities', (data))
+    return await axios.post(url+'/createListOfCities', (data))
     .then(response => {
-      // console.log(response.data);
     })
     .catch(error => {
       console.error(error);
     });
 }
+async function updateListOfCities(data: ListForPost, id: string) {
+  return await axios.patch(url +'/updateListOfCities/' + id, (data))
+  .then(response => {
+  })
+  .catch(error => {
+    console.error(error);
+  });
+}
 
 async function deleteListOfCities(id: string) {
-  axios.delete(url+'/deleteListOfCities/'+ id).then(response => {
-    // console.log(response.data); 
+  return await axios.delete(url+'/deleteListOfCities/'+ id).then(response => {
   })
   .catch(error => {
     console.error(error);
   });
 }
 export default {
-    createListOfCities, getAllCities, getListOfCities, getAllListsOfCities, deleteListOfCities
+    createListOfCities, updateListOfCities, getAllCities, getList, getListOfCities, getAllListsOfCities, deleteListOfCities
 }

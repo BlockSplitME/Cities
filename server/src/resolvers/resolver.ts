@@ -15,10 +15,23 @@ export const getAllCities = async(req, res) => {
 export const getAllListsOfCities = async(req, res) => {
   const tableListsOfCities = AppDataSource.getMongoRepository(ListsOfCities);
   try {
-    const data = await tableListsOfCities.find();
+    const data = await tableListsOfCities.find({cache: true});
     res.json(data);
   } catch(error) {
     res.status(500).json({ error: 'Ошибка получения данных' });
+  }
+}
+
+export const getListById = async(req, res) => {
+  const tableListsOfCities = AppDataSource.getMongoRepository(ListsOfCities);
+
+  const idList = req.params.id
+  
+  try {
+    const list = await tableListsOfCities.findOne({ where: { _id: new ObjectId(idList)}, cache: true});
+    res.json(list);
+  } catch(error) {
+    res.status(500).json({ error: 'Нет такого объекта' });
   }
 }
 
@@ -51,7 +64,7 @@ export const addListOfCities = async (req, res) => {
   }
   
   const hasItem = await tableListsOfCities.findOneBy({name: name})
-  const newList = await tableListsOfCities.create({ name: name, fullName: fullname, color: color, cities: cities });
+  const newList = tableListsOfCities.create({ name: name, fullName: fullname, color: color, cities: cities });
   
   try {
     if(hasItem) res.status(500).json({ error: 'Объект уже сущестует.' + JSON.stringify(hasItem)});
@@ -59,6 +72,28 @@ export const addListOfCities = async (req, res) => {
       await tableListsOfCities.save(newList);
       res.json(newList);
     }
+  } catch (error) {
+    res.status(500).json({ error: 'Ошибка сохранения данных' });
+  }
+}
+
+export const updateListOfCities = async (req, res) => {
+  const tableListsOfCities = AppDataSource.getMongoRepository(ListsOfCities);
+  const { name, fullname, color, cities } = req.body;
+  const idList = req.params.id
+  
+  if (!name) {
+    return res.status(400).json({ error: 'Получены некорректные данные' });
+  }
+  
+  try {
+    const newList = await tableListsOfCities.updateOne({_id: new ObjectId(idList)},{$set: {
+      name: name,
+      fullname: fullname,
+      color: color,
+      cities: cities
+    }})
+    res.json(newList);
   } catch (error) {
     res.status(500).json({ error: 'Ошибка сохранения данных' });
   }

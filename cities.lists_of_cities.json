@@ -1,0 +1,37 @@
+[{
+  "_id": {
+    "$oid": "65f16b4345cd8eb4ccefa6be"
+  },
+  "name": "Россия",
+  "fullName": "Российская Федерация",
+  "color": "red",
+  "cities": [
+    "65f0216a60f1d2e9b7c0b7b3",
+    "65f0230260f1d2e9b7c0b7c2",
+    "65f0230260f1d2e9b7c0b7c3"
+  ]
+},
+{
+  "_id": {
+    "$oid": "65f16b4345cd8eb4ccefa6bf"
+  },
+  "name": "Германия",
+  "fullName": "Германия",
+  "color": "black",
+  "cities": [
+    "65f0230260f1d2e9b7c0b7c5",
+    "65f0230260f1d2e9b7c0b7c0"
+  ],
+  "fullname": null
+},
+{
+  "_id": {
+    "$oid": "65f16b4345cd8eb4ccefa6c0"
+  },
+  "name": "Франция",
+  "fullName": "Франция",
+  "color": "blue",
+  "cities": [
+    "65f0230260f1d2e9b7c0b7be"
+  ]
+}]

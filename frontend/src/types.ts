@@ -7,7 +7,7 @@ export type CityType = {
 export type ListCitiesType = {
     id: string,
     name: string, 
-    fullname: string,
+    fullName: string,
     color: string,
     cities: number[]
 }

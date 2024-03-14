@@ -8,7 +8,7 @@ export const getAllCities = async(req, res) => {
     const data = await tableCities.find({cache: true});
     res.json(data);
   } catch(error) {
-    res.status(500).json({ error: 'Ошибка получения данных' });
+    res.status(500).json({ error: 'Ошибка получения даных' });
   }
 }
 
@@ -18,7 +18,7 @@ export const getAllListsOfCities = async(req, res) => {
     const data = await tableListsOfCities.find({cache: true});
     res.json(data);
   } catch(error) {
-    res.status(500).json({ error: 'Ошибка получения данных' });
+    res.status(500).json({ error: 'Ошибка получения даных' });
   }
 }
 
@@ -31,7 +31,7 @@ export const getListById = async(req, res) => {
     const list = await tableListsOfCities.findOne({ where: { _id: new ObjectId(idList)}, cache: true});
     res.json(list);
   } catch(error) {
-    res.status(500).json({ error: 'Нет такого объекта' });
+    res.status(500).json({ error: 'Ошибка получения даных' });
   }
 }
 
@@ -49,9 +49,8 @@ export const getListOfCities = async(req, res) => {
       }
     }, cache: true});
     res.json(listCities);
-
   } catch(error) {
-    res.status(500).json({ error: 'Нет такого объекта' });
+    res.status(500).json({ error: 'Ошибка получения даных' });
   }
 }
 
@@ -67,10 +66,10 @@ export const addListOfCities = async (req, res) => {
   const newList = tableListsOfCities.create({ name: name, fullName: fullname, color: color, cities: cities });
   
   try {
-    if(hasItem) res.status(500).json({ error: 'Объект уже сущестует.' + JSON.stringify(hasItem)});
+    if(hasItem) res.status(400).json({ error: 'Объект уже сущестует.' + JSON.stringify(hasItem)});
     else {
       await tableListsOfCities.save(newList);
-      res.json(newList);
+      res.json('Объект сохранен');
     }
   } catch (error) {
     res.status(500).json({ error: 'Ошибка сохранения данных' });
@@ -93,7 +92,7 @@ export const updateListOfCities = async (req, res) => {
       color: color,
       cities: cities
     }})
-    res.json(newList);
+    res.json('Объект сохранен');
   } catch (error) {
     res.status(500).json({ error: 'Ошибка сохранения данных' });
   }
@@ -107,10 +106,12 @@ export const deleteListOfCities = async(req, res) => {
   const hasItem = await tableListsOfCities.findOne({ where: { _id: new ObjectId(idList)}, cache: true})
 
   try {
-    if(!hasItem) throw new Error()
-    await tableListsOfCities.delete(new ObjectId(idList))
-    res.status(200).json('Объект удален');
+    if(!hasItem) res.status(400).json({ error: 'Такого объекта нет.'})
+    else {
+      await tableListsOfCities.delete(new ObjectId(idList))
+      res.status(200).json('Объект удален');
+    }
   } catch(error) {
-    res.status(500).json({ error: 'Нет такого объекта' });
+    res.status(500).json({ error: 'Ошибка удаления' });
   }
 }
